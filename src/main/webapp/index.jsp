@@ -8,6 +8,7 @@
         user = DEFAULT_USER_NAME;
     }
 %>
+test message
 <html>
 <head>
     <title>Hello User Application</title>
