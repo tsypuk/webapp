@@ -6,7 +6,7 @@
          version="3.1">
 
     <display-name>Archetype Created Web Application</display-name>
-
+    <description>webapp</description>
     <context-param>
         <param-name>mySetting1</param-name>
         <param-value>This is my setting</param-value>
@@ -36,5 +36,4 @@
         <url-pattern>/hello2</url-pattern>
         <url-pattern>/hello3</url-pattern>
     </servlet-mapping>
-
 </web-app>

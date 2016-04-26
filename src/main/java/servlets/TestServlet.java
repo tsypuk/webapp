@@ -10,13 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet (
+@WebServlet(
         name = "testservlet",
         urlPatterns = "/test",
         loadOnStartup = 1,
         initParams = {
-                @WebInitParam (name = "database", value = "jdbc:localhost/myDB"),
-                @WebInitParam (name = "server", value = "localhost")
+                @WebInitParam(name = "database", value = "jdbc:localhost/myDB"),
+                @WebInitParam(name = "server", value = "localhost")
         }
 )
 public class TestServlet extends HttpServlet {

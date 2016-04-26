@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-@WebServlet (
+@WebServlet(
         name = "forward",
         urlPatterns = {
                 "/forward",

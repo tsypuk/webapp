@@ -2,6 +2,7 @@ package servlets;
 
 import model.Attachment;
 import model.Ticket;
+
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.MultipartConfig;
@@ -27,21 +28,18 @@ import java.util.Map;
         maxFileSize = 20_971_520L, //20MB
         maxRequestSize = 41_943_040L //40MB
 )
-public class TicketServlet extends HttpServlet
-{
+public class TicketServlet extends HttpServlet {
     private volatile int TICKET_ID_SEQUENCE = 1;
 
-    private Map<Integer, Ticket> ticketDatabase = new LinkedHashMap<>();
+    private final Map<Integer, Ticket> ticketDatabase = new LinkedHashMap<>();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         String action = request.getParameter("action");
-        if(action == null)
+        if (action == null)
             action = "list";
-        switch(action)
-        {
+        switch (action) {
             case "create":
                 this.showTicketForm(response);
                 break;
@@ -60,13 +58,11 @@ public class TicketServlet extends HttpServlet
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         String action = request.getParameter("action");
-        if(action == null)
+        if (action == null)
             action = "list";
-        switch(action)
-        {
+        switch (action) {
             case "create":
                 this.createTicket(request, response);
                 break;
@@ -78,8 +74,7 @@ public class TicketServlet extends HttpServlet
     }
 
     private void showTicketForm(HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         PrintWriter writer = this.writeHeader(response);
 
         writer.append("<h2>Create a Ticket</h2>\r\n");
@@ -104,11 +99,10 @@ public class TicketServlet extends HttpServlet
 
     private void viewTicket(HttpServletRequest request,
                             HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         String idString = request.getParameter("ticketId");
         Ticket ticket = this.getTicket(idString, response);
-        if(ticket == null)
+        if (ticket == null)
             return;
 
         PrintWriter writer = this.writeHeader(response);
@@ -119,13 +113,11 @@ public class TicketServlet extends HttpServlet
                 .append("</i><br/><br/>\r\n");
         writer.append(ticket.getBody()).append("<br/><br/>\r\n");
 
-        if(ticket.getNumberOfAttachments() > 0)
-        {
+        if (ticket.getNumberOfAttachments() > 0) {
             writer.append("Attachments: ");
             int i = 0;
-            for(Attachment attachment : ticket.getAttachments())
-            {
-                if(i++ > 0)
+            for (Attachment attachment : ticket.getAttachments()) {
+                if (i++ > 0)
                     writer.append(", ");
                 writer.append("<a href=\"tickets?action=download&ticketId=")
                         .append(idString).append("&attachment=")
@@ -142,23 +134,20 @@ public class TicketServlet extends HttpServlet
 
     private void downloadAttachment(HttpServletRequest request,
                                     HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         String idString = request.getParameter("ticketId");
         Ticket ticket = this.getTicket(idString, response);
-        if(ticket == null)
+        if (ticket == null)
             return;
 
         String name = request.getParameter("attachment");
-        if(name == null)
-        {
+        if (name == null) {
             response.sendRedirect("tickets?action=view&ticketId=" + idString);
             return;
         }
 
         Attachment attachment = ticket.getAttachment(name);
-        if(attachment == null)
-        {
+        if (attachment == null) {
             response.sendRedirect("tickets?action=view&ticketId=" + idString);
             return;
         }
@@ -172,20 +161,17 @@ public class TicketServlet extends HttpServlet
     }
 
     private void listTickets(HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         PrintWriter writer = this.writeHeader(response);
 
         writer.append("<h2>Tickets</h2>\r\n");
         writer.append("<a href=\"tickets?action=create\">Create Ticket")
                 .append("</a><br/><br/>\r\n");
 
-        if(this.ticketDatabase.size() == 0)
+        if (this.ticketDatabase.size() == 0)
             writer.append("<i>There are no tickets in the system.</i>\r\n");
-        else
-        {
-            for(int id : this.ticketDatabase.keySet())
-            {
+        else {
+            for (int id : this.ticketDatabase.keySet()) {
                 String idString = Integer.toString(id);
                 Ticket ticket = this.ticketDatabase.get(id);
                 writer.append("Ticket #").append(idString)
@@ -201,24 +187,21 @@ public class TicketServlet extends HttpServlet
 
     private void createTicket(HttpServletRequest request,
                               HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         Ticket ticket = new Ticket();
         ticket.setCustomerName(request.getParameter("customerName"));
         ticket.setSubject(request.getParameter("subject"));
         ticket.setBody(request.getParameter("body"));
 
         Part filePart = request.getPart("file1");
-        if(filePart != null && filePart.getSize() > 0)
-        {
+        if (filePart != null && filePart.getSize() > 0) {
             Attachment attachment = this.processAttachment(filePart);
-            if(attachment != null)
+            if (attachment != null)
                 ticket.addAttachment(attachment);
         }
 
         int id;
-        synchronized(this)
-        {
+        synchronized (this) {
             id = this.TICKET_ID_SEQUENCE++;
             this.ticketDatabase.put(id, ticket);
         }
@@ -227,16 +210,14 @@ public class TicketServlet extends HttpServlet
     }
 
     private Attachment processAttachment(Part filePart)
-            throws IOException
-    {
+            throws IOException {
         InputStream inputStream = filePart.getInputStream();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         int read;
         final byte[] bytes = new byte[1024];
 
-        while((read = inputStream.read(bytes)) != -1)
-        {
+        while ((read = inputStream.read(bytes)) != -1) {
             outputStream.write(bytes, 0, read);
         }
 
@@ -248,34 +229,27 @@ public class TicketServlet extends HttpServlet
     }
 
     private Ticket getTicket(String idString, HttpServletResponse response)
-            throws ServletException, IOException
-    {
-        if(idString == null || idString.length() == 0)
-        {
+            throws ServletException, IOException {
+        if (idString == null || idString.length() == 0) {
             response.sendRedirect("tickets");
             return null;
         }
 
-        try
-        {
+        try {
             Ticket ticket = this.ticketDatabase.get(Integer.parseInt(idString));
-            if(ticket == null)
-            {
+            if (ticket == null) {
                 response.sendRedirect("tickets");
                 return null;
             }
             return ticket;
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             response.sendRedirect("tickets");
             return null;
         }
     }
 
     private PrintWriter writeHeader(HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
 
@@ -290,8 +264,7 @@ public class TicketServlet extends HttpServlet
         return writer;
     }
 
-    private void writeFooter(PrintWriter writer)
-    {
+    private void writeFooter(PrintWriter writer) {
         writer.append("    </body>\r\n").append("</html>\r\n");
     }
 }

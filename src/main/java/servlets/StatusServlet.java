@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Created by rtsy on 20.04.2016.
  */
-@WebServlet (
+@WebServlet(
         name = "status",
         urlPatterns = "/status"
 )

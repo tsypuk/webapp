@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
 
-@WebServlet (
+@WebServlet(
         name = "context",
         urlPatterns = "/context"
 )
