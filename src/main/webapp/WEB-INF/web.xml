@@ -5,35 +5,14 @@
 	      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-    <display-name>Archetype Created Web Application</display-name>
-    <description>webapp</description>
+    <description>Hello World Application using JSPs</description>
+
     <context-param>
-        <param-name>mySetting1</param-name>
-        <param-value>This is my setting</param-value>
+        <param-name>settingOne</param-name>
+        <param-value>foo</param-value>
     </context-param>
     <context-param>
-        <param-name>mySetting2</param-name>
-        <param-value>SecondSetting</param-value>
+        <param-name>settingTwo</param-name>
+        <param-value>bar</param-value>
     </context-param>
-
-    <servlet>
-        <servlet-name>helloServlet</servlet-name>
-        <servlet-class>servlets.HelloServlet</servlet-class>
-        <init-param>
-            <param-name>firstParameter</param-name>
-            <param-value>BigValue</param-value>
-        </init-param>
-        <init-param>
-            <param-name>secondParameter></param-name>
-            <param-value>SmallValue</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>helloServlet</servlet-name>
-        <url-pattern>/hello</url-pattern>
-        <url-pattern>/hello2</url-pattern>
-        <url-pattern>/hello3</url-pattern>
-    </servlet-mapping>
 </web-app>
