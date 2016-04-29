@@ -1,4 +1,5 @@
 <%@ page session="false" import="java.util.Map" %>
+<%@ page import="smartjava.Ticket" %>
 <%
     @SuppressWarnings("unchecked")
     Map<Integer, Ticket> ticketDatabase =
@@ -9,7 +10,7 @@
 <head>
     <title>Customer Support</title>
 </head>
-<body>
+<>
 <h2>Tickets</h2>
 <a href="<c:url value="/tickets">
             <c:param name="action" value="create" />
@@ -30,5 +31,14 @@
         }
     }
 %>
+
+<c:forEach var="index" begin="0" end="10">
+    Item:<c:out value="${index}"/><BR>
+</c:forEach>
+
+Load list of tickets from JSP:
+<c:forTokens items="${ticketDatabase}" delims="," var="ticket">
+    <c:out value="${ticket}"/><BR>
+</c:forTokens>
 </body>
 </html>
