@@ -32,6 +32,9 @@ public class TicketServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        if (!userInSession(request, response)) return;
+
         String action = request.getParameter("action");
         if (action == null) {
             this.listTickets(request, response);
@@ -53,9 +56,21 @@ public class TicketServlet extends HttpServlet {
         }
     }
 
+    private boolean userInSession(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if(request.getSession().getAttribute("username") == null)
+        {
+            response.sendRedirect("login");
+            return false;
+        }
+        return true;
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        if (!userInSession(request, response)) return;
+
         String action = request.getParameter("action");
         if (action == null)
             action = "list";
