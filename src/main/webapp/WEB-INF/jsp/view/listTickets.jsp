@@ -1,6 +1,7 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="smartjava.Ticket" %>
 <%@include file="included.jsp"%>
+<a href="<c:url value="/login?logout"/>">Logout</a>
 <%
     @SuppressWarnings("unchecked")
     Map<Integer, Ticket> ticketDatabase =
