@@ -1,5 +1,6 @@
 <%@ page session="false" import="java.util.Map" %>
 <%@ page import="smartjava.Ticket" %>
+<%@include file="included.jsp"%>
 <%
     @SuppressWarnings("unchecked")
     Map<Integer, Ticket> ticketDatabase =
@@ -31,7 +32,7 @@
         }
     }
 %>
-
+<jsp:include page="included.jsp"/>
 <c:forEach var="index" begin="0" end="10">
     Item:<c:out value="${index}"/><BR>
 </c:forEach>
