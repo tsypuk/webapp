@@ -11,7 +11,6 @@
     }
 %>
 <%
-    int numberOfSessions = (Integer)request.getAttribute("numberOfSessions");
     @SuppressWarnings("unchecked")
     List<HttpSession> sessions =
             (List<HttpSession>)request.getAttribute("sessionList");
