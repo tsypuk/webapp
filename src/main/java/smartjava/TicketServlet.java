@@ -38,6 +38,7 @@ public class TicketServlet extends HttpServlet {
         String action = request.getParameter("action");
         if (action == null) {
             this.listTickets(request, response);
+            return;
         }
         switch (action) {
             case "create":
