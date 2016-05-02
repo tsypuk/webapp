@@ -5,19 +5,41 @@
                              http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
-    <display-name>Customer Support Application</display-name>
+    <display-name>Spring Application</display-name>
 
     <context-param>
-        <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
-        <param-value>AddressBook-messages</param-value>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/rootContext.xml</param-value>
     </context-param>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/resource/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>springDispatcher</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/servletContext.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springDispatcher</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
 
     <jsp-config>
         <jsp-property-group>
             <url-pattern>*.jsp</url-pattern>
             <url-pattern>*.jspf</url-pattern>
             <page-encoding>UTF-8</page-encoding>
-            <scripting-invalid>false</scripting-invalid>
+            <scripting-invalid>true</scripting-invalid>
             <include-prelude>/WEB-INF/jsp/base.jspf</include-prelude>
             <trim-directive-whitespaces>true</trim-directive-whitespaces>
             <default-content-type>text/html</default-content-type>
@@ -25,78 +47,13 @@
     </jsp-config>
 
     <session-config>
-        <session-timeout>50</session-timeout>
+        <session-timeout>30</session-timeout>
         <cookie-config>
             <http-only>true</http-only>
         </cookie-config>
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>
 
-    <!--<filter>-->
-        <!--<filter-name>filterA</filter-name>-->
-        <!--<filter-class>smartjava.FilterA</filter-class>-->
-    <!--</filter>-->
+    <distributable />
 
-    <!--<filter-mapping>-->
-        <!--<filter-name>filterA</filter-name>-->
-        <!--<url-pattern>/*</url-pattern>-->
-    <!--</filter-mapping>-->
-
-    <!--<filter>-->
-        <!--<filter-name>filterB</filter-name>-->
-        <!--<filter-class>smartjava.FilterB</filter-class>-->
-    <!--</filter>-->
-
-    <!--<filter-mapping>-->
-        <!--<filter-name>filterB</filter-name>-->
-        <!--<url-pattern>/servletTwo</url-pattern>-->
-        <!--<url-pattern>/servletThree</url-pattern>-->
-    <!--</filter-mapping>-->
-
-    <!--<filter>-->
-        <!--<filter-name>filterC</filter-name>-->
-        <!--<filter-class>smartjava.FilterC</filter-class>-->
-    <!--</filter>-->
-
-    <!--<filter-mapping>-->
-        <!--<filter-name>filterC</filter-name>-->
-        <!--<url-pattern>/servletTwo</url-pattern>-->
-    <!--</filter-mapping>-->
-
-
-    <filter>
-        <filter-name>normalFilter</filter-name>
-        <filter-class>smartjava.AnyRequestFilter</filter-class>
-        <async-supported>true</async-supported>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>normalFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-    </filter-mapping>
-
-    <filter>
-        <filter-name>forwardFilter</filter-name>
-        <filter-class>smartjava.AnyRequestFilter</filter-class>
-        <async-supported>true</async-supported>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>forwardFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>FORWARD</dispatcher>
-    </filter-mapping>
-
-    <filter>
-        <filter-name>asyncFilter</filter-name>
-        <filter-class>smartjava.AnyRequestFilter</filter-class>
-        <async-supported>true</async-supported>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>asyncFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>ASYNC</dispatcher>
-    </filter-mapping>
 </web-app>
