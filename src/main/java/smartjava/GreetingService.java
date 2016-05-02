@@ -1,6 +1,5 @@
 package smartjava;
 
-public interface GreetingService
-{
-    public String getGreeting(String name);
+public interface GreetingService {
+    String getGreeting(String name);
 }

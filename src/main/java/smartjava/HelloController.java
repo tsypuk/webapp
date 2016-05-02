@@ -6,26 +6,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class HelloController
-{
+public class HelloController {
     private GreetingService greetingService;
 
     @ResponseBody
     @RequestMapping("/")
-    public String helloWorld()
-    {
+    public String helloWorld() {
         return "Hello, World!";
     }
 
     @ResponseBody
     @RequestMapping(value = "/", params = {"name"})
-    public String helloName(@RequestParam("name") String name)
-    {
+    public String helloName(@RequestParam("name") String name) {
         return this.greetingService.getGreeting(name);
     }
 
-    public void setGreetingService(GreetingService greetingService)
-    {
+    public void setGreetingService(GreetingService greetingService) {
         this.greetingService = greetingService;
     }
 }
