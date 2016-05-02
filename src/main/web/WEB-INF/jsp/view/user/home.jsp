@@ -1,4 +1,4 @@
-<%--@elvariable id="currentUser" type="com.wrox.site.User"--%>
+<%--@elvariable id="currentUser" type="smartjava.User"--%>
 <!DOCTYPE html>
 <html>
     <head>
