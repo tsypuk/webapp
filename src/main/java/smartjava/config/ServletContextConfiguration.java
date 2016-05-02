@@ -15,6 +15,8 @@ import org.springframework.http.converter.xml.SourceHttpMessageConverter;
 import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.RequestToViewNameTranslator;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
@@ -35,11 +37,13 @@ import java.util.List;
         useDefaultFilters = false,
         includeFilters = @ComponentScan.Filter(Controller.class)
 )
-public class ServletContextConfiguration extends WebMvcConfigurerAdapter
-{
-    @Inject ObjectMapper objectMapper;
-    @Inject Marshaller marshaller;
-    @Inject Unmarshaller unmarshaller;
+public class ServletContextConfiguration extends WebMvcConfigurerAdapter {
+    @Inject
+    ObjectMapper objectMapper;
+    @Inject
+    Marshaller marshaller;
+    @Inject
+    Unmarshaller unmarshaller;
 
     @Override
     public void configureMessageConverters(
@@ -72,8 +76,7 @@ public class ServletContextConfiguration extends WebMvcConfigurerAdapter
 
     @Override
     public void configureContentNegotiation(
-            ContentNegotiationConfigurer configurer)
-    {
+            ContentNegotiationConfigurer configurer) {
         configurer.favorPathExtension(true).favorParameter(false)
                 .parameterName("mediaType").ignoreAcceptHeader(false)
                 .useJaf(false).defaultContentType(MediaType.APPLICATION_XML)
@@ -82,8 +85,7 @@ public class ServletContextConfiguration extends WebMvcConfigurerAdapter
     }
 
     @Bean
-    public ViewResolver viewResolver()
-    {
+    public ViewResolver viewResolver() {
         InternalResourceViewResolver resolver =
                 new InternalResourceViewResolver();
         resolver.setViewClass(JstlView.class);
@@ -93,8 +95,12 @@ public class ServletContextConfiguration extends WebMvcConfigurerAdapter
     }
 
     @Bean
-    public RequestToViewNameTranslator viewNameTranslator()
-    {
+    public RequestToViewNameTranslator viewNameTranslator() {
         return new DefaultRequestToViewNameTranslator();
+    }
+
+    @Bean
+    public MultipartResolver multipartResolver() {
+        return new StandardServletMultipartResolver();
     }
 }
