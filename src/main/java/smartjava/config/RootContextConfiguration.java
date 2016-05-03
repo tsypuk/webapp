@@ -19,6 +19,8 @@ import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Executor;
@@ -31,7 +33,8 @@ import java.util.concurrent.Executor;
         excludeFilters = @ComponentScan.Filter(Controller.class)
 )
 public class RootContextConfiguration
-        implements AsyncConfigurer, SchedulingConfigurer {
+        implements AsyncConfigurer, SchedulingConfigurer
+{
     private static final Logger log = LogManager.getLogger();
     private static final Logger schedulingLogger =
             LogManager.getLogger(log.getName() + ".[scheduling]");
@@ -44,12 +47,32 @@ public class RootContextConfiguration
         messageSource.setCacheSeconds(-1);
         messageSource.setDefaultEncoding(StandardCharsets.UTF_8.name());
         messageSource.setBasenames(
-                "/WEB-INF/i18n/messages", "/WEB-INF/i18n/errors"
+                "/WEB-INF/i18n/titles", "/WEB-INF/i18n/messages",
+                "/WEB-INF/i18n/errors", "/WEB-INF/i18n/validation"
         );
         return messageSource;
     }
+
     @Bean
-    public ObjectMapper objectMapper() {
+    public LocalValidatorFactoryBean localValidatorFactoryBean()
+    {
+        LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
+        validator.setValidationMessageSource(this.messageSource());
+        return validator;
+    }
+
+    @Bean
+    public MethodValidationPostProcessor methodValidationPostProcessor()
+    {
+        MethodValidationPostProcessor processor =
+                new MethodValidationPostProcessor();
+        processor.setValidator(this.localValidatorFactoryBean());
+        return processor;
+    }
+
+    @Bean
+    public ObjectMapper objectMapper()
+    {
         ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules();
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
@@ -59,14 +82,16 @@ public class RootContextConfiguration
     }
 
     @Bean
-    public Jaxb2Marshaller jaxb2Marshaller() {
+    public Jaxb2Marshaller jaxb2Marshaller()
+    {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setPackagesToScan(new String[]{"com.wrox.site"});
+        marshaller.setPackagesToScan(new String[] { "com.wrox.site" });
         return marshaller;
     }
 
     @Bean
-    public ThreadPoolTaskScheduler taskScheduler() {
+    public ThreadPoolTaskScheduler taskScheduler()
+    {
         log.info("Setting up thread pool task scheduler with 20 threads.");
         ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
         scheduler.setPoolSize(20);
@@ -85,14 +110,16 @@ public class RootContextConfiguration
     }
 
     @Override
-    public Executor getAsyncExecutor() {
+    public Executor getAsyncExecutor()
+    {
         Executor executor = this.taskScheduler();
         log.info("Configuring asynchronous method executor {}.", executor);
         return executor;
     }
 
     @Override
-    public void configureTasks(ScheduledTaskRegistrar registrar) {
+    public void configureTasks(ScheduledTaskRegistrar registrar)
+    {
         TaskScheduler scheduler = this.taskScheduler();
         log.info("Configuring scheduled method executor {}.", scheduler);
         registrar.setTaskScheduler(scheduler);
