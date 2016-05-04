@@ -30,7 +30,7 @@ import java.util.concurrent.Executor;
 @EnableAsync(proxyTargetClass = true)
 @EnableScheduling
 @ComponentScan(
-        basePackages = "smartjava",
+        basePackages = "smartjava.site",
         excludeFilters =
         @ComponentScan.Filter({Controller.class, ControllerAdvice.class})
 )

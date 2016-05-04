@@ -39,7 +39,7 @@ import java.util.List;
 @Configuration
 @EnableWebMvc
 @ComponentScan(
-        basePackages = "smartjava",
+        basePackages = "smartjava.site",
         useDefaultFilters = false,
         includeFilters = @ComponentScan.Filter(WebController.class)
 )

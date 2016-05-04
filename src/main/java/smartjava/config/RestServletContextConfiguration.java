@@ -28,7 +28,7 @@ import java.util.List;
 @Configuration
 @EnableWebMvc
 @ComponentScan(
-        basePackages = "smartjava",
+        basePackages = "smartjava.site",
         useDefaultFilters = false,
         includeFilters =
         @ComponentScan.Filter({RestEndpoint.class, RestEndpointAdvice.class})
