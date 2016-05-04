@@ -1,6 +1,7 @@
 package smartjava.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import smartjava.config.annotation.WebController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +15,6 @@ import org.springframework.http.converter.xml.MarshallingHttpMessageConverter;
 import org.springframework.http.converter.xml.SourceHttpMessageConverter;
 import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.Unmarshaller;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 import org.springframework.web.multipart.MultipartResolver;
@@ -41,9 +41,9 @@ import java.util.List;
 @ComponentScan(
         basePackages = "smartjava",
         useDefaultFilters = false,
-        includeFilters = @ComponentScan.Filter(Controller.class)
+        includeFilters = @ComponentScan.Filter(WebController.class)
 )
-public class ServletContextConfiguration extends WebMvcConfigurerAdapter
+public class WebServletContextConfiguration extends WebMvcConfigurerAdapter
 {
     @Inject ObjectMapper objectMapper;
     @Inject Marshaller marshaller;
