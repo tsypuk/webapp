@@ -2,6 +2,7 @@ package smartjava.site;
 
 import smartjava.site.validation.NotBlank;
 
+import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.time.Instant;
 
