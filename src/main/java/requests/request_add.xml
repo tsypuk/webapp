@@ -1,0 +1,14 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">
+    <soap:Header/>
+    <soap:Body>
+        <support:createTicket xmlns:support="http://example.com/xmlns/support">
+        <subject>This is ticket to JEEconf</subject>
+        <body>JEEconf will be in Kiev 20-21 may 2016</body>
+        <attachment>
+            	<name>logo.gif</name>
+        	<mimeContentType>image/jpeg</mimeContentType>
+            	<contents>This is content</contents>
+        </attachment>
+        </support:createTicket>
+    </soap:Body>
+</soap:Envelope>

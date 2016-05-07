@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.ws.server.endpoint.annotation.Endpoint;
 
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Executor;
@@ -31,19 +32,18 @@ import java.util.concurrent.Executor;
 @EnableScheduling
 @ComponentScan(
         basePackages = "smartjava.site",
-        excludeFilters =
-        @ComponentScan.Filter({Controller.class, ControllerAdvice.class})
+        excludeFilters = @ComponentScan.Filter({
+                Controller.class, ControllerAdvice.class, Endpoint.class
+        })
 )
 public class RootContextConfiguration
-        implements AsyncConfigurer, SchedulingConfigurer
-{
+        implements AsyncConfigurer, SchedulingConfigurer {
     private static final Logger log = LogManager.getLogger();
     private static final Logger schedulingLogger =
             LogManager.getLogger(log.getName() + ".[scheduling]");
 
     @Bean
-    public MessageSource messageSource()
-    {
+    public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource =
                 new ReloadableResourceBundleMessageSource();
         messageSource.setCacheSeconds(-1);
@@ -56,16 +56,14 @@ public class RootContextConfiguration
     }
 
     @Bean
-    public LocalValidatorFactoryBean localValidatorFactoryBean()
-    {
+    public LocalValidatorFactoryBean localValidatorFactoryBean() {
         LocalValidatorFactoryBean validator = new LocalValidatorFactoryBean();
         validator.setValidationMessageSource(this.messageSource());
         return validator;
     }
 
     @Bean
-    public MethodValidationPostProcessor methodValidationPostProcessor()
-    {
+    public MethodValidationPostProcessor methodValidationPostProcessor() {
         MethodValidationPostProcessor processor =
                 new MethodValidationPostProcessor();
         processor.setValidator(this.localValidatorFactoryBean());
@@ -73,8 +71,7 @@ public class RootContextConfiguration
     }
 
     @Bean
-    public ObjectMapper objectMapper()
-    {
+    public ObjectMapper objectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules();
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
@@ -84,16 +81,14 @@ public class RootContextConfiguration
     }
 
     @Bean
-    public Jaxb2Marshaller jaxb2Marshaller()
-    {
+    public Jaxb2Marshaller jaxb2Marshaller() {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setPackagesToScan(new String[] { "com.wrox.site" });
+        marshaller.setPackagesToScan(new String[]{"com.wrox.site"});
         return marshaller;
     }
 
     @Bean
-    public ThreadPoolTaskScheduler taskScheduler()
-    {
+    public ThreadPoolTaskScheduler taskScheduler() {
         log.info("Setting up thread pool task scheduler with 20 threads.");
         ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
         scheduler.setPoolSize(20);
@@ -112,16 +107,14 @@ public class RootContextConfiguration
     }
 
     @Override
-    public Executor getAsyncExecutor()
-    {
+    public Executor getAsyncExecutor() {
         Executor executor = this.taskScheduler();
         log.info("Configuring asynchronous method executor {}.", executor);
         return executor;
     }
 
     @Override
-    public void configureTasks(ScheduledTaskRegistrar registrar)
-    {
+    public void configureTasks(ScheduledTaskRegistrar registrar) {
         TaskScheduler scheduler = this.taskScheduler();
         log.info("Configuring scheduled method executor {}.", scheduler);
         registrar.setTaskScheduler(scheduler);

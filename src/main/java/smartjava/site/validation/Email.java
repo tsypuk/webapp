@@ -3,7 +3,6 @@ package smartjava.site.validation;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import javax.validation.ReportAsSingleViolation;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.lang.annotation.*;
 
@@ -17,7 +16,6 @@ import java.lang.annotation.*;
         "_~-]+)*@([a-z0-9]([a-z0-9-]*[a-z0-9])?)+(\\.[a-z0-9]" +
         "([a-z0-9-]*[a-z0-9])?)*$", flags = {Pattern.Flag.CASE_INSENSITIVE})
 @ReportAsSingleViolation
-@NotNull
 public @interface Email
 {
     String message() default "{com.wrox.site.validation.Email.message}";
