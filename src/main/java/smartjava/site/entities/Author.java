@@ -12,6 +12,7 @@ public class Author implements Serializable
     private long id;
     private String name;
     private String emailAddress;
+    private Gender gender;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +27,7 @@ public class Author implements Serializable
         this.id = id;
     }
 
-    @Basic
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "AuthorName")
     public String getName()
     {
@@ -47,5 +48,16 @@ public class Author implements Serializable
     public void setEmailAddress(String emailAddress)
     {
         this.emailAddress = emailAddress;
+    }
+
+    @Enumerated(EnumType.STRING)
+    public Gender getGender()
+    {
+        return this.gender;
+    }
+
+    public void setGender(Gender gender)
+    {
+        this.gender = gender;
     }
 }

@@ -62,7 +62,7 @@
             </c:forEach>
         </table><br />
 
-        <form method="post" action="<c:url value="/entities" />">
+        <form method="post" action="<c:url value="/" />">
             <input type="submit" value="Add More Entities" />
         </form>
     </body>

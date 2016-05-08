@@ -2,15 +2,18 @@ package smartjava.site.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Calendar;
 
 @Entity(name = "PublisherEntity")
 @Table(name = "Publishers", indexes = {
         @Index(name = "Publishers_Names", columnList = "PublisherName")
 })
-public class Publisher implements Serializable {
+public class Publisher implements Serializable
+{
     private long id;
     private String name;
     private String address;
+    private Calendar dateFounded;
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE,
@@ -20,31 +23,48 @@ public class Publisher implements Serializable {
             valueColumnName = "KeyValue", initialValue = 11923,
             allocationSize = 1)
     @Column(name = "PublisherId")
-    public long getId() {
+    public long getId()
+    {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(long id)
+    {
         this.id = id;
     }
 
     @Basic
     @Column(name = "PublisherName", nullable = false)
-    public String getName() {
+    public String getName()
+    {
         return this.name;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
     }
 
     @Basic
     @Column(nullable = false)
-    public String getAddress() {
+    public String getAddress()
+    {
         return this.address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(String address)
+    {
         this.address = address;
+    }
+
+    @Temporal(TemporalType.DATE)
+    public Calendar getDateFounded()
+    {
+        return dateFounded;
+    }
+
+    public void setDateFounded(Calendar dateFounded)
+    {
+        this.dateFounded = dateFounded;
     }
 }
